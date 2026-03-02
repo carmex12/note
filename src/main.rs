@@ -25,5 +25,21 @@ enum Commands{
 }
 
 fn main() {
+    let cli = Cli::parse();
 
+    match cli.command {
+        Commands::Add { text } => {
+            let note = text.join(" ");
+            //Store message in .notes.json file
+            todo!()
+        }
+        Commands::List => {
+            //Print out all currents notes in .notes.json
+            todo!()
+        }
+        Commands::Remove { index } => {
+            //Remove the note in the index given with the given index
+            todo!()
+        }
+    }
 }
