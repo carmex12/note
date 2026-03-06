@@ -1,5 +1,7 @@
 use clap::{Parser, Subcommand};
-
+use std::fs::{OpenOptions, read_to_string};
+use std::io::Write;
+use std::fs::File;
 #[derive(Parser)]
 #[command(version, about = "A simple CLI note app", name = "notes")]
 struct Cli {
@@ -18,10 +20,28 @@ enum Commands{
     //List all notes
     List,
 
-    //Remove a note
-    Remove {
-        index: usize
-    }
+    //Remove all notes
+    Clear
+}
+
+fn add_notes(note: &str) -> std::io::Result<()>{
+    let mut file = OpenOptions::new()
+        .append(true)
+        .create(true)
+        .open("notes.txt")?;
+    writeln!(file, "{note}")?;
+    Ok(())
+}
+
+fn clear_notes() -> std::io::Result<()> {
+    File::create("notes.txt")?;
+    Ok(())
+}
+
+fn list_notes() {
+    let contents = read_to_string("notes.txt")
+        .expect("Couldnt read note.txt");
+    println!("{contents}")
 }
 
 fn main() {
@@ -30,16 +50,9 @@ fn main() {
     match cli.command {
         Commands::Add { text } => {
             let note = text.join(" ");
-            //Store message in .notes.json file
-            todo!()
+            add_notes(&note).expect("Error with adding notes to notes.txt");
         }
-        Commands::List => {
-            //Print out all currents notes in .notes.json
-            todo!()
-        }
-        Commands::Remove { index } => {
-            //Remove the note in the index given with the given index
-            todo!()
-        }
+        Commands::List => list_notes(),
+        Commands::Clear => clear_notes().expect("Error with clearing notes.txt")
     }
 }
