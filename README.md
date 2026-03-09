@@ -28,6 +28,7 @@ Run the compiled binary
 - Rust
 - clap for command-line arg parsing
 - Rust standard library for file handling
+- directories for storing notes in system data directory
 
 # Future Improvements
-- Store notes in system data directory
+- Erase specific notes
